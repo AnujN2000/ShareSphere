@@ -2,10 +2,7 @@
 
 ShareSphere is a full stack social media application built using the MERN (MongoDB, Express.js, React, Node.js) stack. It aims to provide users with a platform to connect, share pictures, interact through likes and comments on posts, manage friend lists, and even customize their experience with light and dark modes. The application uses Material UI for its frontend design.
 
-![ShareSphere Screenshot](screenshot.png) <!-- You can replace this with an actual screenshot of your application -->
-
 ## Features
-
 - User Verification: Secure user authentication and verification process.
 - Picture Upload: Users can share their favorite moments by uploading pictures.
 - Likes and Comments: Interact with posts through likes and comments.
@@ -20,4 +17,8 @@ ShareSphere is a full stack social media application built using the MERN (Mongo
 
 2. Navigate to the project directory
 3. Install the required packages for both the frontend and backend:
+
+## Contributitions
+Contributions to improve ShareSphere are always welcomed.
+
 
