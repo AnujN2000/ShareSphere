@@ -1,81 +1,73 @@
-import Post from "../models/Post.js"
+import Post from "../models/Post.js";
 import User from "../models/User.js";
 
-// create 
-export const createPost = async(req,res) =>{
-    try{
-     const{userId, description, picturePath}= req.body;
-     const user= await User.findById(userId);
-     const newPost= new Post({
-        userId,
-        firstName:user.firstName,
-        lastName: user.lastName,
-        location: user.location,
-        description,
-        userPicturePath: user.picutrePath,
-        picturePath,
-        likes:{},
-        comments:[],
-     });
-     await newPost.save();
-    //  grabbing all the posts
-     const post = await Post.find();
-     res.status(201).json(post);
-    }
-    catch(err){
-       res.status(409).json({message:err.message});
-    }
-}
+/* CREATE */
+export const createPost = async (req, res) => {
+  try {
+    const { userId, description, picturePath } = req.body;
+    const user = await User.findById(userId);
+    const newPost = new Post({
+      userId,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      location: user.location,
+      description,
+      userPicturePath: user.picturePath,
+      picturePath,
+      likes: {},
+      comments: [],
+    });
+    await newPost.save();
 
-// read
-export const getFeedPosts = async(req,res)=>{
-    try{
-        //  grabbing all the posts
-        const post = await Post.find();
-        res.status(200).json(post); 
-    }
-    catch(err){
-        res.status(404).json({message:err.message});
-    }
-}
+    const post = await Post.find();
+    res.status(201).json(post);
+  } catch (err) {
+    res.status(409).json({ message: err.message });
+  }
+};
 
-export const getUserPosts= async (req,res)=>{
-    try{
-        // because userId is coming in the request parameters(query string)
-        const {userId}= req.params;
-        //  grabbing all the posts
-        const post = await Post.find({userId});
-        res.status(200).json(post); 
-    }
-    catch(err){
-        res.status(404).json({message:err.message});
-    }
-}
+/* READ */
+export const getFeedPosts = async (req, res) => {
+  try {
+    const post = await Post.find();
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
 
-// update
+export const getUserPosts = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const post = await Post.find({ userId });
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
 
-export const likePost =async(req, res) =>{
-    try{
-        const {id} =req.params;
-        const {userId} = req.body;
-        const post= await Post.findById(id);
-        // this is to check whether the if the userId exist is the likes map
-        const isLiked = post.likes.get(userId);
-        if(isLiked){
-            post.likes.delete(userId);
-        }
-        else{
-            post.likes.set(userId, true);
-        }
+/* UPDATE */
+export const likePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+    const post = await Post.findById(id);
+    const isLiked = post.likes.get(userId);
 
-        const updatedPost = await Post.findByIdAndUpdate(
-            id,
-            {likes:post.likes},
-            {new:true},
-        );
-        res.status(200).json(updatedPost); 
+    if (isLiked) {
+      post.likes.delete(userId);
+    } else {
+      post.likes.set(userId, true);
     }
-    catch(err){
-        res.status(404).json({message:err.message});
-    }
-}
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { likes: post.likes },
+      { new: true }
+    );
+
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
